@@ -1,0 +1,55 @@
+html(lang='en')
+  head
+    title Ridez-Now
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    link(rel='icon', type='image/png', href='/images/icons/favicon.ico')
+    link(rel='stylesheet', href='vendor/bootstrap/css/bootstrap.min.css')
+    link(rel='stylesheet', href='fonts/font-awesome-4.7.0/css/font-awesome.min.css')
+    link(rel='stylesheet', href='fonts/iconic/css/material-design-iconic-font.min.css')
+    link(rel='stylesheet', href='/vendor/animate/animate.css')
+    link(rel='stylesheet', href='/vendor/css-hamburgers/hamburgers.min.css')
+    link(rel='stylesheet', href='/vendor/animsition/css/animsition.min.css')
+    link(rel='stylesheet', href='/vendor/select2/select2.min.css')
+    link(rel='stylesheet', href='/vendor/daterangepicker/daterangepicker.css')
+    link(rel='stylesheet', href='/css/util.css')
+    link(rel='stylesheet', href='/css/main.css')
+  body
+    center(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);')
+      .limiter
+        .container
+          .wrap-login100
+            form.login100-form.validate-form(action='/users/login', method='POST')
+              span.login100-form-title.p-b-48
+                img.img-responsive(src='/images/rideznow.png', width='60%', height='70vh')
+              != messages('message', locals)
+              if errors
+                each error, i in errors
+                  div(class="alert alert-danger") #{error.msg}
+              .wrap-input100.validate-input(data-validate='Required')
+                input.input100(type='text', name='username')
+                span.focus-input100(data-placeholder='Username')
+              .wrap-input100.validate-input(data-validate='Required')
+                span.btn-show-pass
+                  i.zmdi.zmdi-eye
+                input.input100(type='password', name='password')
+                span.focus-input100(data-placeholder='Password')
+              .container-login100-form-btn
+                .wrap-login100-form-btn
+                  .login100-form-bgbtn
+                  button.login100-form-btn(type='submit', value='submit')
+                    | Login
+              .text-center.p-t-115
+                span.txt1
+                  | Don’t have an account?
+                a.txt2(href='/users/signup')
+                  | Sign Up
+    script(src='/vendor/jquery/jquery-3.2.1.min.js')
+    script(src='/vendor/animsition/js/animsition.min.js')
+    script(src='/vendor/bootstrap/js/popper.js')
+    script(src='/vendor/bootstrap/js/bootstrap.min.js')
+    script(src='/vendor/select2/select2.min.js')
+    script(src='/vendor/daterangepicker/moment.min.js')
+    script(src='/vendor/daterangepicker/daterangepicker.js')
+    script(src='/vendor/countdowntime/countdowntime.js')
+    script(src='/js/main.js')
