@@ -80,10 +80,22 @@ app.get('*', function(req, res, next){
   next();
 })
 
-
+//Bring in models
+let Cities = require('./models/cities');
+let User = require('./models/user');
 //Home Route
 app.get('/', (req, res)=>{
-    res.render('home');
+  Cities.find({}, function(err,cities){
+    if(err){
+      console.log(err);
+    }
+    else{
+      res.render('home',{
+        cities: cities,
+        admin: req.user.username
+      });
+    }
+  });
 });
 
 //Route filters

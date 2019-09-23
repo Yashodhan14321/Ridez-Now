@@ -12,5 +12,5 @@ const CitySchema = mongoose.Schema({
     required: true,
     Unique:true
   }
-
-const City = module.exports = mongoose.model('City', UserSchema);
+});
+const City = module.exports = mongoose.model('cities', CitySchema);
