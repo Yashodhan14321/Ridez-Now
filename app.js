@@ -84,7 +84,7 @@ app.get('*', function(req, res, next){
 let Cities = require('./models/cities');
 let User = require('./models/user');
 //Home Route
-app.get('/', (req, res)=>{
+app.get('/',ensureAuthenticated, (req, res)=>{
   Cities.find({}, function(err,cities){
     if(err){
       console.log(err);
@@ -92,11 +92,58 @@ app.get('/', (req, res)=>{
     else{
       res.render('home',{
         cities: cities,
-        admin: req.user.username
+        admin: req.user
       });
     }
   });
 });
+
+app.get('/add',ensureAuthenticated,(req,res)=>{
+  res.render('add');
+});
+
+app.post('/add',ensureAuthenticated,(req,res)=>{
+  var cityname=req.body.cityname;
+  var pincode = req.body.pincode;
+
+  let newCity = new Cities({
+      cityname:cityname,
+      postalcode:pincode
+    });
+  newCity.save(function(err){
+        if(err){
+          console.log(err);
+          return;
+        }
+        else {
+          req.flash('success', 'City Added Successfully');
+          res.redirect('/');
+        }
+      });
+});
+
+app.get('/delete/:id', function(req, res){
+  let query = {_id:req.params.id};
+
+  Cities.findById(req.params.id, function(err, cities){
+      Cities.deleteOne(query, function(err){
+        if(err){
+          console.log(err);
+        }
+        res.redirect('/');
+      });
+    });
+});
+
+// Access Control
+function ensureAuthenticated(req, res, next){
+  if(req.isAuthenticated()){
+    return next();
+  } else {
+    req.flash('danger', 'Please login');
+    res.redirect('/users/login');
+  }
+}
 
 //Route filters
 //Route User

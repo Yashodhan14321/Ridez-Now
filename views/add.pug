@@ -1,0 +1,23 @@
+extends layout
+
+block content
+	center(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); overflow:hidden;')
+		.container
+			.wrap-login100
+				form.login100-form.validate-form(action='/add', method='POST')
+					span.login100-form-title.p-b-48
+						| ADD CITY
+					.wrap-input100.validate-input(data-validate='Required')
+						input.input100(type='text', name='cityname')
+						span.focus-input100(data-placeholder="City Name")
+					br
+					.wrap-input100.validate-input(data-validate='Required')
+						input.input100(type='text', name='pincode')
+						span.focus-input100(data-placeholder='Pincode')
+					br
+					Button(type="submit" value="submit" class="btn" style="border-radius: 10px; background-color:Blue; color:#fff;")
+							|	ADD CITY
+					Button(style="width:15px")
+					a(href="/")
+						Button(class="btn" style="border-radius: 10px; background-color:Red; color:#fff;")
+								|	CANCEL

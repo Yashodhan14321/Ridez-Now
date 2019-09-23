@@ -1,15 +1,20 @@
 extends layout
 block content
   center(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);')
-    .container
-      .wrap-login100
-        ul.list-group
-          each city, i in cities
-            li.list-group-item
-              a(href="/"+city._id)= city.cityname
-              if username="adminrideznow"
-                Button(class="btn" value="ADD CITY" style="border-radius: 10px; background-color:red; color:#fff;")
-                  | REMOVE    
-        if username = "adminrideznow"
-          Button(class="btn" value="ADD CITY" style="border-radius: 10px; background-color:Blue; color:#fff;")
-            | ADD CITY
+    div(style="width:100%; max-height:80vh; overflow:auto;")
+      .container
+        .wrap-login100
+          ul.list-group
+            each city, i in cities
+              li.list-group-item
+                a(href="/"+city._id style="float:left;")
+                  div=city.cityname
+                  div=city.postalcode
+                if admin.username=='adminrideznow'
+                  a(href="/delete/"+city._id)
+                    Button(value="ADD CITY" style="float:right; width:90px; border-radius: 10px; background-color:red; color:#fff; margin-top:10px;")
+                      | REMOVE    
+    if admin.username=='adminrideznow'
+      a(href="/add")
+        Button(class="btn" style="border-radius: 10px; background-color:Blue; color:#fff;")
+          | ADD CITY
