@@ -7,7 +7,7 @@ block content
           ul.list-group
             each city, i in cities
               li.list-group-item
-                a(href="/"+city._id style="float:left;")
+                a(href="/bikes/"+city._id style="float:left;")
                   div=city.cityname
                   div=city.postalcode
                 if admin.username=='adminrideznow'
@@ -18,3 +18,4 @@ block content
       a(href="/add")
         Button(class="btn" style="border-radius: 10px; background-color:Blue; color:#fff;")
           | ADD CITY
+  

@@ -1,0 +1,27 @@
+extends layout
+block content
+    center(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);')
+        div(style="font-size:20px;") #{booking.username}
+        br
+        div(style="font-size:20px;") #{booking.bikename}
+        br
+        div
+            | CLICK THE BUTTON TO START THIS RIDE
+        br
+        if(booking.ongoing==-1)
+            div
+                | STATUS: BOOKED
+            br
+            a(href="/bookings/admin/"+booking._id+"/"+0)
+                .switch
+                    .circle
+        else if(booking.ongoing==0)
+            div
+                | STATUS: ON GOING
+            br
+            a(href="/bookings/admin/"+booking._id+"/"+1)
+                .switch1
+                    .circle1
+        else if(booking.ongoing==1)
+            div
+                | STATUS: COMPLETED

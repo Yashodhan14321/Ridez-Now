@@ -1,0 +1,41 @@
+.switch {
+  position: relative;
+  background-color: #333;
+  display: inline-block;
+  width: 60px;
+  height: 28px;
+  border-radius: 30px;
+}
+.circle{
+  background-color: #fff;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
+  float:left;
+  position: absolute; 
+  top: 50%; 
+  left: 25%; 
+  transform: translate(-50%,-50%);
+}
+.switch1{
+  position: relative;
+  background-color: #333;
+  display: inline-block;
+  width: 60px;
+  height: 28px;
+  border-radius: 30px;
+}
+.circle1{
+  background-color: #fff;
+  display: inline-block;
+  width: 24px;
+  height: 24px;
+  border-radius: 100%;
+  float:left;
+  position: absolute; 
+  top: 50%; 
+  left: 75%; 
+  transform: translate(-50%,-50%);
+}
+

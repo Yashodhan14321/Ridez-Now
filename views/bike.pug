@@ -1,0 +1,23 @@
+extends layout
+
+block content
+    center(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);')
+        div(style="width:100%; max-height:80vh; overflow:auto;")
+            .container
+                .wrap-login100
+                    form.login100-form.validate-form(action='/bike/'+id, method='POST')
+                        .container
+                          .row
+                            | GIVE THE TIME FORMAT AS YYYY-MM-DDTHH:MM
+                          .row
+                            .col-sm-3
+                              .form-group
+                                #datetimepicker1.input-group.date
+                                  input.form-control(type='date-local', name='requiredtime')
+                                  span.input-group-addon
+                                    span.glyphicon.glyphicon-calendar
+                        br
+                        Button(type="submit" value="confirm" style="float:right; width:90px; border-radius: 10px; background-color:blue; color:#fff; margin-top:20px;")
+                            | CONFIRM BOOKING
+    script(src='/js/angular.js')
+

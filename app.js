@@ -8,6 +8,8 @@ const session = require('express-session');
 const passport = require('passport');
 const config = require('./config/database');
 const localtunnel = require('localtunnel');
+var moment = require('moment');
+moment().format();
 
 mongoose.connect(config.database);
 let db = mongoose.connection;
@@ -83,6 +85,8 @@ app.get('*', function(req, res, next){
 //Bring in models
 let Cities = require('./models/cities');
 let User = require('./models/user');
+let Bikes = require('./models/bikes');
+let Booking = require('./models/bookings');
 //Home Route
 app.get('/',ensureAuthenticated, (req, res)=>{
   Cities.find({}, function(err,cities){
@@ -122,7 +126,7 @@ app.post('/add',ensureAuthenticated,(req,res)=>{
       });
 });
 
-app.get('/delete/:id', function(req, res){
+app.get('/delete/:id',ensureAuthenticated, function(req, res){
   let query = {_id:req.params.id};
 
   Cities.findById(req.params.id, function(err, cities){
@@ -133,6 +137,154 @@ app.get('/delete/:id', function(req, res){
         res.redirect('/');
       });
     });
+});
+
+app.get('/done',ensureAuthenticated, function(req, res){
+  res.render('done');
+});
+
+app.get('/deletebike/:id/:id1',ensureAuthenticated, function(req, res){
+  let query = {_id:req.params.id};
+  Bikes.findById(req.params.id, function(err, bikes){
+      Bikes.deleteOne(query, function(err){
+        if(err){
+          console.log(err);
+        }
+        else
+        {
+          res.redirect('/bikes/'+req.params.id1);
+        }
+      });
+    });
+});
+
+app.get('/bikes/:id',ensureAuthenticated, function(req, res){
+  let query = {_id:req.params.id};
+  Cities.findById(req.params.id, function(err, cities){
+    Bikes.find({},function(err, bikes){
+      if(err){
+      console.log(err);
+      }
+      else{
+        res.render('bikes',{
+            bikes:bikes,
+            cities:cities,
+            admin: req.user
+        });
+      }
+    });
+  });
+});
+
+app.get('/bike/:id',ensureAuthenticated, function(req, res){
+  let query = {_id:req.params.id};
+  Bikes.find(query,function(err, Bike){
+    res.render('bike',{
+      id:req.params.id
+    });
+  });
+});
+
+app.post('/bike/:id',ensureAuthenticated, function(req, res){
+  let query = {_id:req.params.id};
+  Bikes.findById(req.params.id,function(err, bike){
+    const username = req.user.username;
+    const bikename = bike.bikename;
+    const requiredontime = req.body.requiredtime;
+    const ongoing = -1;
+    const liscenceimg = '/images/liscence/'+req.user.username+'.png';
+
+    let newbooking = new Booking({
+      username:username,
+      bikename:bikename,
+      requiredontime:requiredontime,
+      ongoing:ongoing,
+      liscenceimg:liscenceimg
+    });
+    newbooking.save(function(err, booking){
+      if(err){
+        console.log(err);
+        return;
+      }
+      else{
+        req.flash('success', 'booking done Successfully');
+        res.redirect('/done');
+      }
+    });
+  });
+});
+
+app.get('/addbike/:id',ensureAuthenticated, function(req, res){
+  Cities.findById(req.params.id,function(err, cities){
+    if(err){
+      console.log(err);
+    }
+    else{
+      res.render('addbike',{
+        cities: cities
+      });
+    }
+  })
+});
+
+app.post('/addbike/:id',ensureAuthenticated, function(req, res){
+  Cities.findById(req.params.id,function(err, cities){
+      const Bikename = req.body.bikename;
+      const cost = req.body.cost;
+      const count = req.body.count;
+      const citypin = cities.postalcode;
+
+      let newBike = new Bikes({
+        bikename:Bikename,
+        costperhour:cost,
+        count:count,
+        citypin:citypin
+      });
+      newBike.save(function(err){
+          if(err){
+            console.log(err);
+            return;
+          }
+          else {
+            req.flash('success', 'Bike Added Successfully');
+            res.redirect('/bikes/'+cities._id);
+          }
+        });
+  });
+});
+
+app.get('/bookings', ensureAuthenticated, function(req, res){
+  let query = {username:req.user.username};
+  Booking.find(query, function(err, booking){
+    res.render("bookings",{
+      booking:booking,
+      username:req.user.username
+    });
+  });
+});
+
+app.get('/bookings/admin/:id', ensureAuthenticated, function(req, res){
+  Booking.findById(req.params.id, function(err, booky){
+    res.render("bikedeleivered",{
+      booking:booky
+    });
+  });
+});
+
+app.get('/bookings/admin/:id/:ongoing', ensureAuthenticated, function(req, res){
+  let book = {};
+  book.takenontime=moment().format();
+  book.ongoing=0;
+  let query = {_id:req.params.id};
+  Booking.updateOne(query,book, function(err){
+    if(err){
+      console.log(err);
+      return;
+      }
+    else{
+      res.redirect('/bookings/admin/'+req.params.id);
+    }
+  });
 });
 
 // Access Control
@@ -150,6 +302,6 @@ function ensureAuthenticated(req, res, next){
 let users = require('./routes/users');
 app.use('/users', users);
 
-app.listen(4000,()=>{
-  console.log('server started on port 4000 .....');
+app.listen(3000,()=>{
+  console.log('server started on port 3000 .....');
 });

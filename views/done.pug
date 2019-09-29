@@ -1,0 +1,9 @@
+extends layout
+
+block content
+	center(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);')
+		h4(style="color:blue; font-weight:800;")
+			| Booking Confirmed 
+			.glyphicon.glyphicon-ok(style="font-size:22px; color: orange")
+	script.
+		window.setTimeout(location.href = "/",8000);

@@ -1,0 +1,26 @@
+extends layout
+block content
+	center(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%); overflow:hidden;')
+		.container
+			.wrap-login100
+				form.login100-form.validate-form(action='/addbike/'+cities._id, method='POST')
+					span.login100-form-title.p-b-48
+						| ADD BIKE
+					.wrap-input100.validate-input(data-validate='Required')
+						input.input100(type='text', name='bikename')
+						span.focus-input100(data-placeholder="Bike Name")
+					br
+					.wrap-input100.validate-input(data-validate='Required')
+						input.input100(type='text', name='cost')
+						span.focus-input100(data-placeholder='Cost/Hour In INR')
+					br
+					.wrap-input100.validate-input(data-validate='Required')
+						input.input100(type='text', name='count')
+						span.focus-input100(data-placeholder='Count')
+					br 
+					Button(type="submit" value="submit" class="btn" style="border-radius: 10px; background-color:Blue; color:#fff;")
+							|	ADD BIKE
+					Button(style="width:15px")
+					a(href="/")
+						Button(class="btn" style="border-radius: 10px; background-color:Red; color:#fff;")
+								|	CANCEL

@@ -1,0 +1,46 @@
+extends layout
+block content
+    center(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);')
+        div(style="width:100%; max-height:80vh; overflow:auto;")
+            if username != "adminrideznow"
+                .container
+                  .wrap-login100
+                    ul.list-group
+                      each booky, i in booking
+                        if(booky.username==username)
+                            li.list-group-item
+                              a(href="/bookings/"+booky._id)
+                                div=booky.bikename
+                                div=booky.takenontime
+                                div=booky.returnednontime
+                                div=booky.hours
+                                if(booky.ongoing==1)
+                                    div
+                                        | COMPLETED
+                                else if(booky.ongoing==-1)
+                                    div
+                                        | BOOKED
+                                else
+                                    div
+                                        | ON GOING
+            else
+                .container
+                  .wrap-login100
+                    ul.list-group
+                      each booky, i in booking
+                        li.list-group-item
+                          a(href="/bookings/admin/"+booky._id)
+                            div=booky.username
+                            div=booky.bikename
+                            div=booky.takenontime  
+                                #{booky.returnednontime}
+                            div=booky.hours
+                            if(booky.ongoing==1)
+                                div
+                                    | COMPLETED
+                            else if(booky.ongoing==-1)
+                                div
+                                    | BOOKED
+                            else
+                                div
+                                    | ON GOING
