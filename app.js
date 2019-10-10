@@ -9,6 +9,8 @@ const passport = require('passport');
 const config = require('./config/database');
 const localtunnel = require('localtunnel');
 var moment = require('moment');
+var formidable = require('formidable');
+var fs = require('fs');
 moment().format();
 
 mongoose.connect(config.database);
@@ -88,7 +90,11 @@ let User = require('./models/user');
 let Bikes = require('./models/bikes');
 let Booking = require('./models/bookings');
 //Home Route
-app.get('/',ensureAuthenticated, (req, res)=>{
+app.get('/',(req, res)=>{
+  res.render('splash');
+});
+
+app.get('/home',ensureAuthenticated, (req, res)=>{
   Cities.find({}, function(err,cities){
     if(err){
       console.log(err);
@@ -109,10 +115,12 @@ app.get('/add',ensureAuthenticated,(req,res)=>{
 app.post('/add',ensureAuthenticated,(req,res)=>{
   var cityname=req.body.cityname;
   var pincode = req.body.pincode;
+  var cityimg = "/imagedb/cityimg/"+pincode+".png";
 
   let newCity = new Cities({
       cityname:cityname,
-      postalcode:pincode
+      postalcode:pincode,
+      cityimg:cityimg
     });
   newCity.save(function(err){
         if(err){
@@ -286,6 +294,57 @@ app.get('/bookings/admin/:id/:ongoing', ensureAuthenticated, function(req, res){
     }
   });
 });
+
+
+//
+//
+//PLACE IMAGE UPLOAD
+//
+//
+app.get('/cityimgupload/:id',ensureAuthenticated, function(req, res){
+  Cities.findById(req.params.id, function(err, city){
+    res.render('cityimg',{
+    image:city
+  });
+  });
+});
+
+app.post('/cityimgupload/:id',ensureAuthenticated, function(req, res){
+  var cityimage;
+  Cities.findById(req.params.id, function(err, citi){
+    cityimg = citi.cityimg;
+  });
+  var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+    var oldpath = files.filetoupload.path;
+//console.log(oldpath);
+var newpath = path.join(__dirname,'./public/') + cityimg;
+fs.readFile(oldpath, function (err, data) {
+if (err) throw err;
+console.log('File read!');
+
+// Write the file
+fs.writeFile(newpath, data, function (err) {
+if (err) throw err;
+res.redirect('/cityimgupload/'+req.params.id);
+res.end();
+console.log('File written!');
+});
+
+// Delete the file
+fs.unlink(oldpath, function (err) {
+if (err) throw err;
+console.log('File deleted!');
+});
+    });
+}); 
+});
+
+//
+//
+//
+//
+
 
 // Access Control
 function ensureAuthenticated(req, res, next){

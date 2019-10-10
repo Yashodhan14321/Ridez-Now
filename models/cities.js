@@ -7,6 +7,9 @@ const CitySchema = mongoose.Schema({
     required: true,
     Unique:true
   },
+  cityimg:{
+    type: String
+  },
   postalcode:{
     type:String,
     required: true,

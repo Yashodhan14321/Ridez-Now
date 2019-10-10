@@ -1,5 +1,40 @@
-extends layout
-block content
+doctype html
+html
+  head
+    link(rel='stylesheet' href='/css/switch.css')
+    link(rel='icon', type='image/png', href='/images/icons/favicon.ico')
+    link(rel='stylesheet', href='/vendor/bootstrap/css/bootstrap.min.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/fonts/font-awesome-4.7.0/css/font-awesome.min.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/fonts/iconic/css/material-design-iconic-font.min.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/vendor/animate/animate.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/vendor/css-hamburgers/hamburgers.min.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/vendor/animsition/css/animsition.min.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/vendor/select2/select2.min.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/vendor/daterangepicker/daterangepicker.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/css/util.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/css/main.css' , crossorigin="anonymous")
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+    script(src='https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+
+  body
+    nav.navbar.navbar-expand-md.bg-dark.navbar-dark(style="z-index:200; float:left; width:100%;")
+      a.navbar-brand(href='#') Ridez Now
+      button.navbar-toggler(type='button',style="float:right;" data-toggle='collapse', data-target='#collapsibleNavbar')
+        span.navbar-toggler-icon
+      #collapsibleNavbar.collapse.navbar-collapse
+        ul.navbar-nav
+          li.nav-item
+            a.nav-link(href='#') About
+          li.nav-item
+            a.nav-link(href='/bookings') My Bookings
+          li.nav-item
+            a.nav-link(href='#') My Profile
+          li.nav-item
+            a.nav-link(href='/users/logout') LogOut
     center(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);')
         div(style="font-size:20px;") #{booking.username}
         br
@@ -25,3 +60,12 @@ block content
         else if(booking.ongoing==1)
             div
                 | STATUS: COMPLETED
+    script(src='/vendor/jquery/jquery-3.2.1.min.js')
+    script(src='/vendor/animsition/js/animsition.min.js')
+    script(src='/vendor/bootstrap/js/popper.js')
+    script(src='/vendor/bootstrap/js/bootstrap.min.js')
+    script(src='/vendor/select2/select2.min.js')
+    script(src='/vendor/daterangepicker/moment.min.js')
+    script(src='/vendor/daterangepicker/daterangepicker.js')
+    script(src='/vendor/countdowntime/countdowntime.js')
+    script(src='/js/main.js')

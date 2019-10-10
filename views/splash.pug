@@ -1,0 +1,13 @@
+html
+  head
+    title
+      | Home
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/css/bootstrap.min.css')
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.min.js')
+  body(style='background-color: cornsilk')
+    #splash(style='width:100%; height:100%;')
+      center(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);')
+        img.img-responsive(src='/images/rideznow.png')
+    script.
+      setTimeout("location.href = '/home';", 3000);

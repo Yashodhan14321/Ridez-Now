@@ -1,21 +1,76 @@
-extends layout
-block content
-  center(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);')
-    div(style="width:100%; max-height:80vh; overflow:auto;")
-      .container
-        .wrap-login100
-          ul.list-group
-            each city, i in cities
-              li.list-group-item
-                a(href="/bikes/"+city._id style="float:left;")
-                  div=city.cityname
-                  div=city.postalcode
-                if admin.username=='adminrideznow'
-                  a(href="/delete/"+city._id)
-                    Button(value="ADD CITY" style="float:right; width:90px; border-radius: 10px; background-color:red; color:#fff; margin-top:10px;")
-                      | REMOVE    
+doctype html
+html
+  head
+    link(rel='stylesheet' href='/css/switch.css')
+    link(rel='icon', type='image/png', href='/images/icons/favicon.ico')
+    link(rel='stylesheet', href='/vendor/bootstrap/css/bootstrap.min.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/fonts/font-awesome-4.7.0/css/font-awesome.min.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/fonts/iconic/css/material-design-iconic-font.min.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/vendor/animate/animate.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/vendor/css-hamburgers/hamburgers.min.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/vendor/animsition/css/animsition.min.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/vendor/select2/select2.min.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/vendor/daterangepicker/daterangepicker.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/css/util.css', crossorigin="anonymous")
+    link(rel='stylesheet', href='/css/main.css' , crossorigin="anonymous")
+    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
+    script(src='https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js')
+    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js')
+    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css')
+    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
+
+  body
+    nav.navbar.navbar-expand-md.bg-dark.navbar-dark(style="z-index:200; float:left; width:100%;")
+      a.navbar-brand(href='#') Ridez Now
+      button.navbar-toggler(type='button',style="float:right;" data-toggle='collapse', data-target='#collapsibleNavbar')
+        span.navbar-toggler-icon
+      #collapsibleNavbar.collapse.navbar-collapse
+        ul.navbar-nav
+          li.nav-item
+            a.nav-link(href='#') About
+          li.nav-item
+            a.nav-link(href='/bookings') My Bookings
+          li.nav-item
+            a.nav-link(href='#') My Profile
+          li.nav-item
+            a.nav-link(href='/users/logout') LogOut
+    div(style="width:100%; max-height:85%; overflow:auto;")
+      .container(style="width:100%;")
+        ul.list-group
+          each city, i in cities
+            li.list-group-item
+              a.row(href="/bikes/"+city._id style="text-decoration:none;")
+                div.row(style="width:98%;")
+                  div.col-sm-5(style='width:40%; height:20%; float:left;')
+                    img.img-responsive(src=city.cityimg onerror="this.src='/imagedb/cityimg/avatar.png'")
+                  div.col-sm-7(style='width:60%; height:16%; float:right;')
+                    h3(style='font-size:16px; text-align:right; color:black')=city.cityname
+                      br
+                      | #{city.postalcode}
+              if admin.username=='adminrideznow'
+                .row
+                  .col-sm-4(style="width:50%")
+                  .col-sm-4(style="width:22%; text-align:right;")
+                    a(href='/delete/'+city._id)
+                      button.btn(style="background-color:red; color:#fff; border-radius:4px;")
+                        | REMOVE
+                  .col-sm-4(style="width:22%; text-align:right;")
+                    a(href='/cityimgupload/'+city._id)
+                      button.btn(style="background-color:red; color:#fff; border-radius:4px;")
+                        | ADD IMG
+            div(style="height:2vh")
     if admin.username=='adminrideznow'
-      a(href="/add")
-        Button(class="btn" style="border-radius: 10px; background-color:Blue; color:#fff;")
+      a(href="/add" style="bottom:0;")
+        Button(class="btn" style="bottom:0; width:100%; background-color:Blue; color:#fff;")
           | ADD CITY
+    script(src='/vendor/jquery/jquery-3.2.1.min.js')
+    script(src='/vendor/animsition/js/animsition.min.js')
+    script(src='/vendor/bootstrap/js/popper.js')
+    script(src='/vendor/bootstrap/js/bootstrap.min.js')
+    script(src='/vendor/select2/select2.min.js')
+    script(src='/vendor/daterangepicker/moment.min.js')
+    script(src='/vendor/daterangepicker/daterangepicker.js')
+    script(src='/vendor/countdowntime/countdowntime.js')
+    script(src='/js/main.js')
   
