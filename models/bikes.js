@@ -14,7 +14,7 @@ const BikesSchema = mongoose.Schema({
     type:String,
     required:true
   },
-  img:{
+  bikeimg:{
     type: String,
     Unique: true
   },

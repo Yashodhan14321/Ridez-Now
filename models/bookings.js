@@ -14,14 +14,18 @@ const BookingSchema = mongoose.Schema({
     type: String,
   },
   requiredontime:{
-    type:Date,
+    type:String,
+    required:true
+  },
+  personret:{
+    type:String,
     required:true
   },
   takenontime:{
-    type: Date,
+    type: String,
   },
   returnedontime:{
-    type: Date,
+    type: String,
   },
   liscenceimg:{
     type: String
@@ -30,6 +34,9 @@ const BookingSchema = mongoose.Schema({
     type: Number
   },
   ongoing:{
+    type: Number
+  },
+  payed:{
     type: Number
   }
 });

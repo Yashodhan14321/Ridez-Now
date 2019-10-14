@@ -1,6 +1,8 @@
 doctype html
 html
   head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet' href='/css/switch.css')
     link(rel='icon', type='image/png', href='/images/icons/favicon.ico')
     link(rel='stylesheet', href='/vendor/bootstrap/css/bootstrap.min.css', crossorigin="anonymous")
@@ -22,25 +24,25 @@ html
 
   body
     nav.navbar.navbar-expand-md.bg-dark.navbar-dark(style="z-index:200; float:left; width:100%;")
-      a.navbar-brand(href='#') Ridez Now
+      a.navbar-brand(href='/home') Ridez Now
       button.navbar-toggler(type='button',style="float:right;" data-toggle='collapse', data-target='#collapsibleNavbar')
         span.navbar-toggler-icon
       #collapsibleNavbar.collapse.navbar-collapse
         ul.navbar-nav
           li.nav-item
-            a.nav-link(href='#') About
+            a.nav-link(href='/about') About
           li.nav-item
             a.nav-link(href='/bookings') My Bookings
           li.nav-item
-            a.nav-link(href='#') My Profile
+            a.nav-link(href='/liimgupload') My Profile
           li.nav-item
             a.nav-link(href='/users/logout') LogOut
     center(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);')
-		h4(style="color:blue; font-weight:800;")
-			| Booking Confirmed 
-			.glyphicon.glyphicon-ok(style="font-size:22px; color: orange")
-	script.
-		window.setTimeout(location.href = "/",8000);
+      h4(style="color:blue; font-weight:800;")
+        | Booking Confirmed 
+        .glyphicon.glyphicon-ok(style="font-size:22px; color: orange")
+    script.
+      setTimeout("location.href = '/home';", 3000);
     script(src='/vendor/jquery/jquery-3.2.1.min.js')
     script(src='/vendor/animsition/js/animsition.min.js')
     script(src='/vendor/bootstrap/js/popper.js')
@@ -50,4 +52,4 @@ html
     script(src='/vendor/daterangepicker/daterangepicker.js')
     script(src='/vendor/countdowntime/countdowntime.js')
     script(src='/js/main.js')
-	
+

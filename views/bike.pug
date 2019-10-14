@@ -1,66 +1,67 @@
 doctype html
 html
   head
-    link(rel='stylesheet' href='/css/switch.css')
-    link(rel='icon', type='image/png', href='/images/icons/favicon.ico')
-    link(rel='stylesheet', href='/vendor/bootstrap/css/bootstrap.min.css', crossorigin="anonymous")
-    link(rel='stylesheet', href='/fonts/font-awesome-4.7.0/css/font-awesome.min.css', crossorigin="anonymous")
-    link(rel='stylesheet', href='/fonts/iconic/css/material-design-iconic-font.min.css', crossorigin="anonymous")
-    link(rel='stylesheet', href='/vendor/animate/animate.css', crossorigin="anonymous")
-    link(rel='stylesheet', href='/vendor/css-hamburgers/hamburgers.min.css', crossorigin="anonymous")
-    link(rel='stylesheet', href='/vendor/animsition/css/animsition.min.css', crossorigin="anonymous")
-    link(rel='stylesheet', href='/vendor/select2/select2.min.css', crossorigin="anonymous")
-    link(rel='stylesheet', href='/vendor/daterangepicker/daterangepicker.css', crossorigin="anonymous")
-    link(rel='stylesheet', href='/css/util.css', crossorigin="anonymous")
-    link(rel='stylesheet', href='/css/main.css' , crossorigin="anonymous")
-    script(src='https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js')
-    script(src='https://cdn.jsdelivr.net/momentjs/2.14.1/moment.min.js')
-    script(src='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/js/bootstrap-datetimepicker.min.js')
-    link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css')
-    link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
-
+    title
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    link(href='/bootstrap/css/bootstrap.min.css', rel='stylesheet', media='screen')
+    link(href='/css/bootstrap-datetimepicker.min.css', rel='stylesheet', media='screen')
   body
     nav.navbar.navbar-expand-md.bg-dark.navbar-dark(style="z-index:200; float:left; width:100%;")
-      a.navbar-brand(href='#') Ridez Now
+      a.navbar-brand(href='#/home') Ridez Now
       button.navbar-toggler(type='button',style="float:right;" data-toggle='collapse', data-target='#collapsibleNavbar')
         span.navbar-toggler-icon
       #collapsibleNavbar.collapse.navbar-collapse
         ul.navbar-nav
           li.nav-item
-            a.nav-link(href='#') About
+            a.nav-link(href='/about') About
           li.nav-item
             a.nav-link(href='/bookings') My Bookings
           li.nav-item
-            a.nav-link(href='#') My Profile
+            a.nav-link(href='/liimgupload') My Profile
           li.nav-item
             a.nav-link(href='/users/logout') LogOut
-    center(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);')
-        div(style="width:100%; max-height:80vh; overflow:auto;")
-            .container
-                .wrap-login100
-                    form.login100-form.validate-form(action='/bike/'+id, method='POST')
-                        .container
-                          .row
-                            | GIVE THE TIME FORMAT AS YYYY-MM-DDTHH:MM
-                          .row
-                            .col-sm-3
-                              .form-group
-                                #datetimepicker1.input-group.date
-                                  input.form-control(type='date-local', name='requiredtime')
-                                  span.input-group-addon
-                                    span.glyphicon.glyphicon-calendar
-                        br
-                        Button(type="submit" value="confirm" style="float:right; width:90px; border-radius: 10px; background-color:blue; color:#fff; margin-top:20px;")
-                            | CONFIRM BOOKING
-    script(src='/js/angular.js')
-    script(src='/vendor/jquery/jquery-3.2.1.min.js')
-    script(src='/vendor/animsition/js/animsition.min.js')
-    script(src='/vendor/bootstrap/js/popper.js')
-    script(src='/vendor/bootstrap/js/bootstrap.min.js')
-    script(src='/vendor/select2/select2.min.js')
-    script(src='/vendor/daterangepicker/moment.min.js')
-    script(src='/vendor/daterangepicker/daterangepicker.js')
-    script(src='/vendor/countdowntime/countdowntime.js')
-    script(src='/js/main.js')
-
+    .container(style="top:20%; position:absolute;")
+      form(action='/bike/'+id, method='post', role='form')
+        fieldset
+          center
+            h2 SELECT TIME SLOT
+          .form-group
+            h3 FROM
+            .input-group.date.form_datetime(data-date='1979-09-16T05:25:07Z', data-date-format='dd MM yyyy - HH:ii p', data-link-field='dtp_input1')
+              input.form-control(name="requiredtime",size='16', placeholder="FROM", type='text', value='', readonly='')
+              span.input-group-addon
+                span.glyphicon.glyphicon-remove
+              span.input-group-addon
+                span.glyphicon.glyphicon-th
+            input#dtp_input1(type='hidden', value='')
+            br
+            h3 TO
+            .input-group.date.form_datetime(data-date='1979-09-16T05:25:07Z', data-date-format='dd MM yyyy - HH:ii p', data-link-field='dtp_input1')
+              input.form-control(name="personret",placeholder="TO",size='16', type='text', value='', readonly='')
+              span.input-group-addon
+                span.glyphicon.glyphicon-remove
+              span.input-group-addon
+                span.glyphicon.glyphicon-th
+            input#dtp_input1(type='hidden', value='')
+            br
+            button.btn(type='submit',value="submit" style='border-radius: 4px; border: none; background-color: blue; color: #fff;') BOOK NOW
+    script(type='text/javascript', src='/jquery/jquery-1.8.3.min.js', charset='UTF-8')
+    script(type='text/javascript', src='/bootstrap/js/bootstrap.min.js')
+    script(type='text/javascript', src='/js/bootstrap-datetimepicker.js', charset='UTF-8')
+    script(type='text/javascript', src='/js/locales/bootstrap-datetimepicker.fr.js', charset='UTF-8')
+    script(type='text/javascript').
+      $('.form_datetime').datetimepicker({
+      //language:  'fr',
+      weekStart: 1,
+      todayBtn:  1,
+      autoclose: 1,
+      todayHighlight: 1,
+      startView: 2,
+      forceParse: 0,
+      showMeridian: 1
+      });

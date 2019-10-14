@@ -199,15 +199,27 @@ app.post('/bike/:id',ensureAuthenticated, function(req, res){
     const username = req.user.username;
     const bikename = bike.bikename;
     const requiredontime = req.body.requiredtime;
+    const personret = req.body.personret;
     const ongoing = -1;
+    const payed = 0;
     const liscenceimg = '/images/liscence/'+req.user.username+'.png';
 
+    let bikes={};
+    bikes.count = bike.count-1;
+    Bikes.updateOne(query, bikes, function(err){
+      if(err)
+      {
+        console.log(err);
+      }
+    });
     let newbooking = new Booking({
       username:username,
       bikename:bikename,
       requiredontime:requiredontime,
+      personret:personret,
       ongoing:ongoing,
-      liscenceimg:liscenceimg
+      liscenceimg:liscenceimg,
+      payed:payed
     });
     newbooking.save(function(err, booking){
       if(err){
@@ -262,13 +274,16 @@ app.post('/addbike/:id',ensureAuthenticated, function(req, res){
 });
 
 app.get('/bookings', ensureAuthenticated, function(req, res){
-  let query = {username:req.user.username};
-  Booking.find(query, function(err, booking){
+  Booking.find(function(err, booking){
     res.render("bookings",{
       booking:booking,
       username:req.user.username
     });
   });
+});
+
+app.get('/about', function(req, res){
+  res.render("about");
 });
 
 app.get('/bookings/admin/:id', ensureAuthenticated, function(req, res){
@@ -279,20 +294,118 @@ app.get('/bookings/admin/:id', ensureAuthenticated, function(req, res){
   });
 });
 
-app.get('/bookings/admin/:id/:ongoing', ensureAuthenticated, function(req, res){
-  let book = {};
-  book.takenontime=moment().format();
-  book.ongoing=0;
-  let query = {_id:req.params.id};
-  Booking.updateOne(query,book, function(err){
-    if(err){
+app.get('/bookings/:id', ensureAuthenticated, function(req, res){
+  Booking.findById(req.params.id, function(err, booky){
+    let query = {bikename:booky.bikename};
+    Bikes.findOne(query, function(err, bike){
+      res.render("userbikedeleivered",{
+        booking:booky,
+        price:bike.costperhour*booky.hours
+      });
+    });
+  });
+});
+
+app.get('/booking/cancel/:id', ensureAuthenticated, function(req, res){
+  let query={_id:req.params.id};
+  Booking.deleteOne(query, function(err){
+    if(err)
+    {
       console.log(err);
-      return;
-      }
-    else{
-      res.redirect('/bookings/admin/'+req.params.id);
+    }
+    else
+    {
+      res.redirect('/');
     }
   });
+});
+
+app.get('/booking/payed/:id', ensureAuthenticated, function(req, res){
+  let query={_id:req.params.id};
+  let booking = {};
+  booking.payed = 1;
+  Booking.updateOne(query,booking, function(err){
+    if(err)
+    {
+      console.log(err);
+    }
+    else
+    {
+      res.redirect(req.get('referer'));
+    }
+  });
+});
+
+app.get('/bookings/admin/:id/:ongoing', ensureAuthenticated, function(req, res){
+  let book = {};
+  book.ongoing=req.params.ongoing;
+  if(req.params.ongoing==1)
+  {
+    Booking.findById(req.params.id, function(err, book){
+      var bikena = book.bikename;
+      console.log(book.bikename);
+      let query = {bikename:bikena};
+      Bikes.findOne(query, function(err, bike){
+        if(err)
+        {
+          console.log(err);
+        }
+        else
+        {
+          console.log(bike);
+        }
+        let bikes={};
+        let d = bike.count;
+        bikes.count = parseInt(d)+1;
+        console.log(bike.bikename);
+        console.log(d);
+        Bikes.updateOne(query, bikes, function(err){
+          if(err)
+          {
+            console.log(err);
+          }
+        })
+
+      });
+    });
+  }
+  if(req.params.ongoing == 0)
+  {
+    let d = new Date();
+    book.takenontime = d;
+    let query = {_id:req.params.id};
+    Booking.updateOne(query,book, function(err){
+      if(err){
+        console.log(err);
+        return;
+        }
+      else{
+        res.redirect('/bookings/admin/'+req.params.id);
+      }
+    });
+  }
+  else if(req.params.ongoing == 1)
+  {
+    let d = new Date();
+    book.returnedontime = d;
+    Booking.findById(req.params.id, function(err, boo){
+      let m = boo.takenontime;
+      let k = Date.parse(m);
+      console.log(k);
+      let c = (d.getTime()-k)/(1000*60*60);
+      book.hours = Math.ceil(c);
+      let query = {_id:req.params.id};
+      Booking.updateOne(query,book, function(err){
+        if(err){
+          console.log(err);
+          return;
+          }
+        else{
+          res.redirect('/bookings/admin/'+req.params.id);
+        }
+      });
+    });
+  }
 });
 
 
@@ -344,7 +457,109 @@ console.log('File deleted!');
 //
 //
 //
+//
+//
+//BIKE IMAGE UPLOAD
+//
+//
+app.get('/bikeimgupload/:id',ensureAuthenticated, function(req, res){
+  Bikes.findById(req.params.id, function(err, Bike){
+    let query ={_id:req.params.id};
+    let bike={};
+    bike.bikeimg = "/imagedb/bikeimg/"+Bike._id+".png";
+    Bikes.updateOne(query, bike,function(err)
+    {
+      if(err)
+      {
+        console.log(err);
+      }
+    });
+    res.render('bikeimg',{
+    image:Bike
+  });
+  });
+});
 
+app.post('/bikeimgupload/:id',ensureAuthenticated, function(req, res){
+  var bikeimage;
+  Bikes.findById(req.params.id, function(err, bike){
+    bikeimg = bike.bikeimg;
+  });
+  var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+    var oldpath = files.filetoupload.path;
+//console.log(oldpath);
+var newpath = path.join(__dirname,'./public/') + bikeimg;
+fs.readFile(oldpath, function (err, data) {
+if (err) throw err;
+console.log('File read!');
+
+// Write the file
+fs.writeFile(newpath, data, function (err) {
+if (err) throw err;
+res.redirect('/bikeimgupload/'+req.params.id);
+res.end();
+console.log('File written!');
+});
+
+// Delete the file
+fs.unlink(oldpath, function (err) {
+if (err) throw err;
+console.log('File deleted!');
+});
+    });
+}); 
+});
+//
+//
+//
+//
+
+//
+//
+//PLACE IMAGE UPLOAD
+//
+//
+app.get('/liimgupload',ensureAuthenticated, function(req, res){
+  res.render('profileimg',{
+    image:req.user
+  });
+});
+
+app.post('/liimgupload',ensureAuthenticated, function(req, res){
+  var cityimg = "/images/liscence/"+req.user.username+".png" ;
+  var form = new formidable.IncomingForm();
+    form.parse(req, function (err, fields, files) {
+    var oldpath = files.filetoupload.path;
+//console.log(oldpath);
+var newpath = path.join(__dirname,'./public/') + cityimg;
+fs.readFile(oldpath, function (err, data) {
+if (err) throw err;
+console.log('File read!');
+
+// Write the file
+fs.writeFile(newpath, data, function (err) {
+if (err) throw err;
+res.redirect('/liimgupload');
+res.end();
+console.log('File written!');
+});
+
+// Delete the file
+fs.unlink(oldpath, function (err) {
+if (err) throw err;
+console.log('File deleted!');
+});
+    });
+}); 
+});
+//
+//
+//
+//
+//
+//
+//
 
 // Access Control
 function ensureAuthenticated(req, res, next){

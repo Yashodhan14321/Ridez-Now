@@ -1,6 +1,8 @@
 doctype html
 html
   head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet' href='/css/switch.css')
     link(rel='icon', type='image/png', href='/images/icons/favicon.ico')
     link(rel='stylesheet', href='/vendor/bootstrap/css/bootstrap.min.css', crossorigin="anonymous")
@@ -22,17 +24,17 @@ html
 
   body
     nav.navbar.navbar-expand-md.bg-dark.navbar-dark(style="z-index:200; float:left; width:100%;")
-      a.navbar-brand(href='#') Ridez Now
+      a.navbar-brand(href='/home') Ridez Now
       button.navbar-toggler(type='button',style="float:right;" data-toggle='collapse', data-target='#collapsibleNavbar')
         span.navbar-toggler-icon
       #collapsibleNavbar.collapse.navbar-collapse
         ul.navbar-nav
           li.nav-item
-            a.nav-link(href='#') About
+            a.nav-link(href='/about') About
           li.nav-item
             a.nav-link(href='/bookings') My Bookings
           li.nav-item
-            a.nav-link(href='#') My Profile
+            a.nav-link(href='/liimgupload') My Profile
           li.nav-item
             a.nav-link(href='/users/logout') LogOut
     div(style="width:100%; max-height:85%; overflow:auto;")
@@ -43,7 +45,7 @@ html
               a.row(href="/bike/"+bike._id style="text-decoration:none;")
                 div.row(style="width:98%;")
                   div.col-sm-5(style='width:40%; height:20%; float:left;')
-                    img.img-responsive(src='')
+                    img.img-responsive(src=bike.bikeimg onerror="this.src='/imagedb/bikeimg/avatar.png'")
                   div.col-sm-7(style='width:60%; height:16%; float:right;')
                     h3(style='font-size:16px; text-align:right; color:black')=bike.bikename
                       br
@@ -57,11 +59,15 @@ html
                         | Not Available
               if admin.username=='adminrideznow'
                 .row
-                  .col-sm-4(style="width:70%")
-                  .col-sm-4(style="width:20%; text-align:right;")
+                  .col-sm-4(style="width:50%")
+                  .col-sm-4(style="width:22%; text-align:right;")
                     a(href='/deletebike/'+bike._id+'/'+cities._id)
                       button.btn(style="background-color:red; color:#fff; border-radius:4px;")
                         | REMOVE
+                  .col-sm-4(style="width:22%; text-align:right;")
+                    a(href='/bikeimgupload/'+bike._id)
+                      button.btn(style="background-color:red; color:#fff; border-radius:4px;")
+                        | ADD IMG
             div(style="height:2vh")
     if admin.username=='adminrideznow'
       a(href="/addbike/"+cities._id style="bottom:0;")

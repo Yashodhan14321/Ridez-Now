@@ -1,6 +1,8 @@
 doctype html
 html
   head
+    meta(charset='utf-8')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
     link(rel='stylesheet' href='/css/switch.css')
     link(rel='icon', type='image/png', href='/images/icons/favicon.ico')
     link(rel='stylesheet', href='/vendor/bootstrap/css/bootstrap.min.css', crossorigin="anonymous")
@@ -20,19 +22,19 @@ html
     link(rel='stylesheet', href='https://cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.min.css')
     link(rel='stylesheet', href='https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css')
 
-  body
+  body(onload="timingfun()")
     nav.navbar.navbar-expand-md.bg-dark.navbar-dark(style="z-index:200; float:left; width:100%;")
-      a.navbar-brand(href='#') Ridez Now
+      a.navbar-brand(href='/home') Ridez Now
       button.navbar-toggler(type='button',style="float:right;" data-toggle='collapse', data-target='#collapsibleNavbar')
         span.navbar-toggler-icon
       #collapsibleNavbar.collapse.navbar-collapse
         ul.navbar-nav
           li.nav-item
-            a.nav-link(href='#') About
+            a.nav-link(href='/about') About
           li.nav-item
             a.nav-link(href='/bookings') My Bookings
           li.nav-item
-            a.nav-link(href='#') My Profile
+            a.nav-link(href='/liimgupload') My Profile
           li.nav-item
             a.nav-link(href='/users/logout') LogOut
     center(style='position: absolute; top: 50%; left: 50%; transform: translate(-50%,-50%);')
@@ -44,41 +46,56 @@ html
                       each booky, i in booking
                         if(booky.username==username)
                             li.list-group-item
-                              a(href="/bookings/"+booky._id)
-                                div=booky.bikename
-                                div=booky.takenontime
-                                div=booky.returnednontime
-                                div=booky.hours
-                                if(booky.ongoing==1)
-                                    div
-                                        | COMPLETED
-                                else if(booky.ongoing==-1)
-                                    div
-                                        | BOOKED
-                                else
-                                    div
-                                        | ON GOING
-            else
+                              a.row(href="/bookings/"+booky._id style="text-decoration:none;")
+                                div.row(style="width:98%;")
+                                  div.col-sm-5(style='width:40%; height:20%; float:left;')
+                                    img.img-responsive(src=booky.liscenceimg onerror="this.src='/imagedb/cityimg/avatar.png'" style="width:300px; height:100px;")
+                                  div.col-sm-7(style='width:60%; height:16%; float:right;')
+                                    h3(style='font-size:16px; text-align:right; color:black')=booky.bikename
+                                      div#timing
+                                      | #{booky.takenontime}
+                                      div#timing1
+                                      | #{booky.returnednontime}
+                                      div
+                                      | #{booky.hours}
+                                      |  hrs
+                                      if(booky.ongoing==1)
+                                        div
+                                            | COMPLETED
+                                      else if(booky.ongoing==-1)
+                                        div
+                                            | BOOKED
+                                      else
+                                        div
+                                            | ON GOING
+            if username == "adminrideznow"
                 .container
                   .wrap-login100
                     ul.list-group
                       each booky, i in booking
                         li.list-group-item
-                          a(href="/bookings/admin/"+booky._id)
-                            div=booky.username
-                            div=booky.bikename
-                            div=booky.takenontime  
-                                #{booky.returnednontime}
-                            div=booky.hours
-                            if(booky.ongoing==1)
-                                div
-                                    | COMPLETED
-                            else if(booky.ongoing==-1)
-                                div
-                                    | BOOKED
-                            else
-                                div
-                                    | ON GOING
+                            a.row(href="/bookings/admin/"+booky._id style="text-decoration:none;")
+                                div.row(style="width:98%;")
+                                  div.col-sm-5(style='width:40%; height:20%; float:left;')
+                                    img.img-responsive(src=booky.liscenceimg onerror="this.src='/imagedb/cityimg/avatar.png'" style="width:300px; height:100px;")
+                                  div.col-sm-7(style='width:60%; height:16%; float:right;')
+                                    h3(style='font-size:16px; text-align:right; color:black')=booky.bikename
+                                      div#timing
+                                        | #{booky.takenontime}
+                                      div#timing1
+                                        | #{booky.returnednontime}
+                                      div
+                                        | #{booky.hours}
+                                        |  hrs
+                                      if(booky.ongoing==1)
+                                        div
+                                            | COMPLETED
+                                      else if(booky.ongoing==-1)
+                                        div
+                                            | BOOKED
+                                      else
+                                        div
+                                            | ON GOING
     script(src='/vendor/jquery/jquery-3.2.1.min.js')
     script(src='/vendor/animsition/js/animsition.min.js')
     script(src='/vendor/bootstrap/js/popper.js')
@@ -88,4 +105,23 @@ html
     script(src='/vendor/daterangepicker/daterangepicker.js')
     script(src='/vendor/countdowntime/countdowntime.js')
     script(src='/js/main.js')
+    script.
+        function timingfun()
+        {
+            var tim = document.getElementById("timing").innerHTML;
+            var tim1 = document.getElementById("timing1").innerHTML;
+            var arr = new Array();
+            var arr1 = new Array();
+            arr = tim.split(' ');
+            arr1 = tim1.split(' ');
+            if(tim!="")
+            {
+                document.getElementById("timing").innerHTML = arr[0]+" "+arr[1]+" "+arr[2]+" "+arr[3]+" "+arr[4];
+            }
+            if(tim1!="")
+            {
+                document.getElementById("timing1").innerHTML = arr1[0]+" "+arr1[1]+" "+arr1[2]+" "+arr1[3]+" "+arr1[4];
+            }
+        }
+
     
