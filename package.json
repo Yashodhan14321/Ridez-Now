@@ -19,7 +19,7 @@
     "fs": "0.0.1-security",
     "localtunnel": "^2.0.0",
     "moment": "^2.24.0",
-    "mongoose": "^5.7.4",
+    "mongoose": "^5.7.5",
     "passport": "^0.4.0",
     "passport-local": "^1.0.0",
     "path": "^0.12.7",
